@@ -8,8 +8,6 @@ class ModuleAnalyzer:
         self.classes = []
         self.functions = []
         self.dependencies = []
-        self.api_surface_area = []
-        self.globals = []
         self._parse_classes()
         self._parse_functions()
         self._parse_imports()
