@@ -1,6 +1,24 @@
 import ast
 from python_module_scanner.classes.module_analyzer import ModuleAnalyzer
 
+class FunctionIterator:
+    """Iterator for accessing and traversing elements."""
+    def __init__(self, data):
+        self.data = data
+        self.index = 0
+
+    def has_next(self):
+        """Check if there are more elements."""
+        return self.index < len(self.data)
+
+    def next(self):
+        """Return the next element."""
+        if not self.has_next():
+            raise StopIteration("No more elements")
+        result = self.data[self.index]
+        self.index += 1
+        return result
+
 class ExtractFunctionDefinitions(ModuleAnalyzer):
     def __init__(self, module, only=None):
         super().__init__(module)
