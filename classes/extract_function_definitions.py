@@ -1,5 +1,5 @@
 import ast
-from classes.module_analyzer import ModuleAnalyzer
+from python_module_scanner.classes.module_analyzer import ModuleAnalyzer
 
 class ExtractFunctionDefinitions(ModuleAnalyzer):
     def __init__(self, module, only=None):
