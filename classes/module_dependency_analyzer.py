@@ -1,5 +1,4 @@
 import ast
-import inspect
 from python_module_scanner.classes.module_analyzer import ModuleAnalyzer
 
 class ImportVisitor(ast.NodeVisitor):
@@ -9,13 +8,16 @@ class ImportVisitor(ast.NodeVisitor):
 
     def visit_Import(self, node):
         for alias in node.names:
-            self.direct_imports.append(alias.name)
+            self.direct_imports.append({'name': alias.name, 'alias': alias.asname if alias.asname else alias.name})
         self.generic_visit(node)
 
     def visit_ImportFrom(self, node):
         module = node.module if node.module else ''
         for alias in node.names:
-            self.from_imports.append(f"{module}.{alias.name}")
+            self.from_imports.append({
+                'module': f"{module}.{alias.name}" if module else alias.name,
+                'alias': alias.asname if alias.asname else alias.name
+            })
         self.generic_visit(node)
 
 class ModuleDependencyAnalyzer(ModuleAnalyzer):
@@ -35,6 +37,3 @@ class ModuleDependencyAnalyzer(ModuleAnalyzer):
     def get_imports(self):
         """Returns the categorized imports."""
         return self.imports
-
-
-
