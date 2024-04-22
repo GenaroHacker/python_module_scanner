@@ -1,0 +1,4 @@
+import ast
+from generate_class_relationships_diagram import GenerateClassRelationshipsDiagram
+from extract_function_definitions import ExtractFunctionDefinitions
+from module_dependency_analyzer import ModuleDependencyAnalyzer
