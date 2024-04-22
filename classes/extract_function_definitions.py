@@ -29,6 +29,7 @@ class ExtractFunctionDefinitions(ModuleAnalyzer):
     def filtered_functions(self):
         """Apply filters based on the 'only' options provided."""
         filtered = self.functions
+        # Filters for various attributes
         if 'docstring' in self.only:
             filtered = [f for f in filtered if (f['docstring'] is not None) == self.only['docstring']]
         if 'decorators' in self.only:
@@ -39,7 +40,7 @@ class ExtractFunctionDefinitions(ModuleAnalyzer):
             filtered = [f for f in filtered if (f['returns'] is not None) == self.only['returns']]
         if 'class' in self.only:
             filtered = [f for f in filtered if f['class'] in self.only['class'] if self.only['class'] is not None]
-        
+
         return filtered
 
     def _parse_functions(self):
@@ -60,14 +61,19 @@ class ExtractFunctionDefinitions(ModuleAnalyzer):
         return function_list
 
     def list_functions(self):
-        """Return a list of functions as dictionaries."""
-        functions_list = []
+        """Return a list of functions as dictionaries organized by class."""
+        class_dict = {}
         while self.iterator.has_next():
             func = self.iterator.next()
-            function_detail = {
-                'name': func['name'],
-                'class': func.get('class'),
-                'details': {k: v for k, v in func.items() if k not in ['name', 'class'] and v is not None}
-            }
-            functions_list.append(function_detail)
-        return functions_list
+            class_name = func['class'] if func['class'] else 'Global Functions'
+            if class_name not in class_dict:
+                class_dict[class_name] = []
+            class_dict[class_name].append({
+                'method_name': func['name'],
+                'args': func['args'],
+                'docstring': func['docstring']
+            })
+
+        # Convert dictionary to list format
+        module_description = [{'class_name': k, 'methods': v} for k, v in class_dict.items()]
+        return module_description
