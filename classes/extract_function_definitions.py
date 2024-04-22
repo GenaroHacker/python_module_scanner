@@ -60,18 +60,14 @@ class ExtractFunctionDefinitions(ModuleAnalyzer):
         return function_list
 
     def list_functions(self):
-        """List all functions using the iterator pattern, returning results as a string."""
-        result = "Function Definitions:\n"
+        """Return a list of functions as dictionaries."""
+        functions_list = []
         while self.iterator.has_next():
             func = self.iterator.next()
-            result += f"Function Name: {func['name']}\n"
-            if func['class']:
-                result += f"  Class: {func['class']}\n"
-            for key, value in func.items():
-                if key not in ['name', 'class'] and value is not None:
-                    result += f"  {key.capitalize()}: {value}\n"
-            result += "\n"  # Blank line for separation
-        return result
-
-
-
+            function_detail = {
+                'name': func['name'],
+                'class': func.get('class'),
+                'details': {k: v for k, v in func.items() if k not in ['name', 'class'] and v is not None}
+            }
+            functions_list.append(function_detail)
+        return functions_list
