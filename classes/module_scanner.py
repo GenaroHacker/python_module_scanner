@@ -1,7 +1,7 @@
 import ast
-from generate_class_relationships_diagram import GenerateClassRelationshipsDiagram
-from extract_function_definitions import ExtractFunctionDefinitions
-from module_dependency_analyzer import ModuleDependencyAnalyzer
+from classes.generate_class_relationships_diagram import GenerateClassRelationshipsDiagram
+from classes.extract_function_definitions import ExtractFunctionDefinitions
+from classes.module_dependency_analyzer import ModuleDependencyAnalyzer
 
 class ModuleScanner:
     def __init__(self, module):
