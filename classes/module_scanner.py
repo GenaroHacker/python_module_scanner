@@ -11,25 +11,14 @@ class ModuleScanner:
         self.module_dependency_analyzer = ModuleDependencyAnalyzer(module)
 
     def scan_class_relationships(self):
-        """Executes the class relationship diagram analysis and returns the results."""
-        self.class_diagram_analyzer.execute()  # Execute analysis
-        class_diagram = "Class Relationships Diagram:\n"
-        for node in self.class_diagram_analyzer.class_nodes.values():
-            if not node.bases:  # Only top-level classes are displayed initially
-                class_diagram += str(node)
-        return class_diagram
+        """Executes the class relationship diagram analysis and returns the results as structured data."""
+        return self.class_diagram_analyzer.execute()
 
     def scan_function_definitions(self, only=None):
-        """Executes function definition extraction and prints the results, with optional filtering."""
-        # Temporarily set the only filter for this operation
-        self.function_definition_analyzer.only = only
+        """Executes function definition extraction and returns the results as structured data."""
+        self.function_definition_analyzer.only = only  # Optionally apply filters
         return self.function_definition_analyzer.list_functions()
 
     def scan_module_dependencies(self):
-        """Analyzes and retrieves module dependencies, returning the formatted results."""
-        self.module_dependency_analyzer.analyze_imports()
-        imports_report = "Module Dependencies:\n"
-        imports_report += f"Direct Imports: {self.module_dependency_analyzer.imports['direct']}\n"
-        imports_report += f"From Imports: {self.module_dependency_analyzer.imports['from']}"
-        return imports_report
-
+        """Analyzes and retrieves module dependencies, returning the structured results."""
+        return self.module_dependency_analyzer.get_imports()
