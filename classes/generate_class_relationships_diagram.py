@@ -13,14 +13,14 @@ class ClassNode:
     def add_subclass(self, subclass):
         self.subclasses.append(subclass)
 
-    def __str__(self):
-        return self._print_hierarchy()
+    def to_dict(self):
+        # Convert the class node and its hierarchy to a dictionary
+        return {
+            'name': self.name,
+            'bases': [base.name for base in self.bases],
+            'subclasses': [subclass.to_dict() for subclass in self.subclasses]
+        }
 
-    def _print_hierarchy(self, level=0):
-        ret = "\t" * level + f"{self.name}\n"
-        for subclass in self.subclasses:
-            ret += subclass._print_hierarchy(level + 1)
-        return ret
 
 class GenerateClassRelationshipsDiagram(ModuleAnalyzer):
     def __init__(self, module):
@@ -34,14 +34,11 @@ class GenerateClassRelationshipsDiagram(ModuleAnalyzer):
                     self.class_nodes[base].add_subclass(node)
 
     def execute(self):
-        """
-        Generate a diagram showing relationships and hierarchies among classes in the module,
-        formatted in a human-readable string using the Composite pattern.
-        """
-        # Create a readable format of the class relationships.
-        print("Class Relationships Diagram:\n\n")
+        # Instead of printing, structure the data into a nested dictionary
+        output = {}
         for node in self.class_nodes.values():
-            if not node.bases:  # Print only top-level classes (no bases)
-                print(node)
+            if not node.bases:  # Only top-level classes included initially
+                output[node.name] = node.to_dict()
+        return output
 
 
