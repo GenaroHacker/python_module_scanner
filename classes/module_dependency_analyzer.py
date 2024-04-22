@@ -1,6 +1,6 @@
 import ast
 import inspect
-from module_analyzer import ModuleAnalyzer
+from classes.module_analyzer import ModuleAnalyzer
 
 class ImportVisitor(ast.NodeVisitor):
     def __init__(self):
